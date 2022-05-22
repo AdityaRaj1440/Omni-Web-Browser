@@ -1,19 +1,26 @@
 package com.example.webbrowser2;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -27,27 +34,57 @@ public class MainActivity extends AppCompatActivity {
     public String url = "";
     WebView wb;
     SearchView sv;
+    SwipeRefreshLayout swipe;
     int no= 1;
+    Activity activity ;
+    ProgressDialog progDialog;
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         Button btn= (Button) findViewById(R.id.tabs);
         btn.setText(""+no);
         sv= (SearchView) findViewById(R.id.searchBar);
+
+        activity = this;
+
+
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 url= "https://duckduckgo.com/?q="+s+"&ia=web";
+
+
 //                Intent intent = new Intent(MainActivity.this, SearchResult.class);
 //                intent.putExtra("url", url);
 //                startActivity(intent);
                 setContentView(R.layout.activity_search_result);
-                wb= (WebView) findViewById(R.id.searchResult);
-                WebSettings webSettings = wb.getSettings();
-                webSettings.setJavaScriptEnabled(true);
-                wb.setWebViewClient(new WebViewClient());
-                wb.loadUrl(url);
+                final EditText urlET = findViewById(R.id.urlET);
+                final ImageView home = findViewById(R.id.home);
+                urlET.setText(url);
+
+                home.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
+
+                WebAction();
+
+                swipe = (SwipeRefreshLayout)findViewById(R.id.swipe);
+                swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        urlET.setText(WebAction());
+                        swipe.setRefreshing(false);
+                    }
+                });
+
+
                 return false;
             }
 
@@ -61,6 +98,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public String WebAction() {
+
+        progDialog = ProgressDialog.show(activity, "Loading","Please wait...", true);
+        progDialog.setCancelable(false);
+
+        wb= (WebView) findViewById(R.id.searchResult);
+        WebSettings webSettings = wb.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setSupportMultipleWindows(true);
+        wb.setWebViewClient(new WebViewClient(){
+            public void onPageFinished(WebView view, String url) {
+                if (progDialog.isShowing()) {
+                    progDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String urlExisting, Bitmap favicon) {
+                super.onPageStarted(view, urlExisting, favicon);
+                url = urlExisting;
+
+            }
+        });
+        wb.loadUrl(url);
+        return url;
+
+    }
+
+   
+
+
     @Override
     public void onBackPressed() {
         try{
@@ -70,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 wb.goBack();
+
             }
         }catch (Exception e){
             if (doubleBackToExitPressedOnce) {
