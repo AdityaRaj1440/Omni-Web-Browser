@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     int no= 1;
     Activity activity ;
     ProgressDialog progDialog;
+    //final EditText urlET = findViewById(R.id.urlET);
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +63,27 @@ public class MainActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MainActivity.this, SearchResult.class);
 //                intent.putExtra("url", url);
 //                startActivity(intent);
+
                 setContentView(R.layout.activity_search_result);
+                final WebView wb = findViewById(R.id.searchResult);
                 final EditText urlET = findViewById(R.id.urlET);
                 final ImageView home = findViewById(R.id.home);
+
                 urlET.setText(url);
+
 
                 home.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        finish();
+                        wb.goBack();
                     }
                 });
 
+
                 WebAction();
+
+
+
 
                 swipe = (SwipeRefreshLayout)findViewById(R.id.swipe);
                 swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -107,7 +117,12 @@ public class MainActivity extends AppCompatActivity {
         WebSettings webSettings = wb.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportMultipleWindows(true);
+        webSettings.setDomStorageEnabled(true);
+
         wb.setWebViewClient(new WebViewClient(){
+
+
+           @Override
             public void onPageFinished(WebView view, String url) {
                 if (progDialog.isShowing()) {
                     progDialog.dismiss();
@@ -119,14 +134,17 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageStarted(view, urlExisting, favicon);
                 url = urlExisting;
 
+
             }
         });
+
         wb.loadUrl(url);
+
         return url;
 
     }
 
-   
+
 
 
     @Override
