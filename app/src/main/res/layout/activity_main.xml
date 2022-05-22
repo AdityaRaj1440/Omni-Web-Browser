@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#73ACC3"
-    android:backgroundTint="#73ACC3"
+    android:background="#bbc2cc"
+    android:backgroundTint="#bbc2cc"
     android:orientation="vertical"
     android:textAlignment="center"
     tools:context=".MainActivity">
@@ -49,6 +49,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="normal"
+            android:onClick= "addTabs"
             tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
         <ImageButton
@@ -128,18 +129,11 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="309dp"
-        android:text="\nOmni Browser"
-        android:textAlignment="center"
-        android:textSize="60sp" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="88dp" />
+        android:layout_height="135dp" />
 
     <SearchView
         android:id="@+id/searchBar"
@@ -147,11 +141,21 @@
         android:layout_height="62dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
-        android:queryHint="Search Here" />
+        android:queryHint="Search Here">
 
-    <WebView
-        android:id="@+id/search"
+    </SearchView>
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="279dp"
+        android:fontFamily="@font/bungee_shade"
+        android:gravity="center"
+        android:text="Omni Browser"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textColorHighlight="#CC9595"
+        android:textSize="60sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

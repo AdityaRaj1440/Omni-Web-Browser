@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class SearchResult extends AppCompatActivity {
 
@@ -15,6 +16,7 @@ public class SearchResult extends AppCompatActivity {
         WebView wb= (WebView) findViewById(R.id.searchResult);
         WebSettings webSettings = wb.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        wb.setWebViewClient(new WebViewClient());
         String url = getIntent().getStringExtra("url");
         wb.loadUrl(url);
     }
