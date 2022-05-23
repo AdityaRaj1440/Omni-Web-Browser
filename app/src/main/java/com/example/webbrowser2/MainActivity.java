@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-                WebAction();
+                WebAction(urlET);
 
 
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        urlET.setText(WebAction());
+                        urlET.setText(WebAction(urlET));
                         swipe.setRefreshing(false);
                     }
                 });
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public String WebAction() {
+    public String WebAction(EditText urlET) {
 
         progDialog = ProgressDialog.show(activity, "Loading","Please wait...", true);
         progDialog.setCancelable(false);
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageStarted(WebView view, String urlExisting, Bitmap favicon) {
                 super.onPageStarted(view, urlExisting, favicon);
                 url = urlExisting;
+                urlET.setText(url);
 
 
             }
