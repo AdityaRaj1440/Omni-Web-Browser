@@ -3,6 +3,7 @@ package com.example.webbrowser2;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -14,8 +15,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -66,11 +70,32 @@ public class MainActivity extends AppCompatActivity {
 
                 setContentView(R.layout.activity_search_result);
                 final WebView wb = findViewById(R.id.searchResult);
-                final EditText urlET = findViewById(R.id.urlET);
+                 EditText urlET = findViewById(R.id.urlET);
                 final ImageView home = findViewById(R.id.home);
 
-                urlET.setText(url);
 
+                urlET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                        if (keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                                || i == EditorInfo.IME_ACTION_DONE){
+                            String curUrl= urlET.getText().toString();
+                            if(!curUrl.contains(".com")){
+                                curUrl= "https://duckduckgo.com/?q="+curUrl+"&ia=web";
+                            }
+                            InputMethodManager imm = (InputMethodManager)  getBaseContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(urlET.getWindowToken(), 0);
+                            urlET.setCursorVisible(false);
+                            wb.loadUrl(curUrl);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+
+
+                urlET.setText(url);
 
                 home.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -189,6 +214,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
     }
+
+    public void setVisibility(android.view.View view)
+    {
+        EditText et= (EditText) findViewById(view.getId());
+        et.setCursorVisible(true);
+    }
+
 
 
 }
