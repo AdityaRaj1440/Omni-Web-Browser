@@ -8,6 +8,238 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imageButton3"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="65dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="271dp"-->
+        <!--            android:layout_marginTop="-5dp"-->
+        <!--            android:layout_marginEnd="50dp"-->
+        <!--            android:layout_marginBottom="2dp"-->
+        <!--            android:backgroundTint="#00FFFFFF"-->
+        <!--            app:srcCompat="@android:drawable/zoom_plate"-->
+        <!--            tools:ignore="SpeakableTextPresentCheck" />-->
+
+        <!--        <Button-->
+        <!--            android:id="@+id/tabs"-->
+        <!--            android:layout_width="61dp"-->
+        <!--            android:layout_height="48dp"-->
+        <!--            android:layout_alignStart="@+id/imageButton3"-->
+        <!--            android:layout_alignEnd="@+id/imageButton3"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="12dp"-->
+        <!--            android:layout_marginTop="14dp"-->
+        <!--            android:layout_marginEnd="17dp"-->
+        <!--            android:layout_marginBottom="0dp"-->
+        <!--            android:backgroundTint="#33B5D114"-->
+        <!--            android:fontFamily="@font/anton"-->
+        <!--            android:text="@string/_1"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:textSize="16sp"-->
+        <!--            android:textStyle="normal"-->
+        <!--            android:onClick= "addTabs"-->
+        <!--            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imageButton4"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="56dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="358dp"-->
+        <!--            android:layout_marginTop="9dp"-->
+        <!--            android:layout_marginEnd="-2dp"-->
+        <!--            android:layout_marginBottom="-3dp"-->
+        <!--            android:backgroundTint="#537583"-->
+        <!--            app:srcCompat="@android:drawable/ic_media_play" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/exit"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="60dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="-2dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_marginEnd="357dp"-->
+        <!--            android:layout_marginBottom="-2dp"-->
+        <!--            android:backgroundTint="#B3DF2020"-->
+        <!--            android:onClick="exit"-->
+        <!--            app:srcCompat="@android:drawable/btn_dialog" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imageButton9"-->
+        <!--            android:layout_width="67dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="47dp"-->
+        <!--            android:layout_marginTop="0dp"-->
+        <!--            android:layout_marginEnd="297dp"-->
+        <!--            android:layout_marginBottom="-5dp"-->
+        <!--            android:backgroundTint="#00FFFFFF"-->
+        <!--            android:scaleType="fitXY"-->
+        <!--            app:srcCompat="@drawable/settings" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imageButton10"-->
+        <!--            android:layout_width="63dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="110dp"-->
+        <!--            android:layout_marginTop="0dp"-->
+        <!--            android:layout_marginEnd="239dp"-->
+        <!--            android:layout_marginBottom="-3dp"-->
+        <!--            android:backgroundTint="#00FFFFFF"-->
+        <!--            android:scaleType="fitXY"-->
+        <!--            app:srcCompat="@drawable/bookmark" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imageButton13"-->
+        <!--            android:layout_width="68dp"-->
+        <!--            android:layout_height="59dp"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginEnd="172dp"-->
+        <!--            android:layout_marginBottom="1dp"-->
+        <!--            android:scaleType="fitXY"-->
+        <!--            android:tint="#00FFFFFF"-->
+        <!--            app:srcCompat="@drawable/history" />-->
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#35B0CF"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
+            <RelativeLayout
+                android:id="@+id/url_go_progressbar_relLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/back_arrow"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/forward_arrow"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:onClick="getBack"
+                    android:src="@drawable/back_arrow" />
+
+                <ImageButton
+                    android:id="@+id/forward_arrow"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/stop"
+                    android:layout_weight="1"
+                    android:onClick="getForward"
+                    android:padding="20dp"
+                    android:src="@drawable/forward_arrow" />
+
+                <ImageButton
+                    android:id="@+id/stop"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/refresh"
+                    android:layout_weight="1"
+                    android:onClick="exit"
+                    android:padding="20dp"
+                    android:src="@drawable/stop_icon" />
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/bookmark"
+                    android:layout_weight="1"
+                    android:onClick="reloadPage"
+                    android:padding="20dp"
+                    android:src="@drawable/refresh_icon" />
+
+                <ImageButton
+                    android:id="@+id/bookmark"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/history"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:src="@drawable/bookmark_icon"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <ImageButton
+                    android:id="@+id/history"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tabs"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:src="@drawable/history_icon"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <Button
+                    android:id="@+id/tabs"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_toLeftOf="@+id/home"
+                    android:backgroundTint="#4697CD"
+                    android:fontFamily="@font/anton"
+                    android:onClick="addTabs"
+                    android:text="@string/_1"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+                <ImageButton
+                    android:id="@+id/home"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:onClick= "return_to_home"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:src="@drawable/home_icon"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:background="#FFFFFF"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -16,32 +248,30 @@
 
         <ImageView
             android:id="@+id/home"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_centerVertical="true"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/home"
 
-            />
+            android:src="@drawable/home" />
 
         <EditText
             android:id="@+id/urlET"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:layout_toEndOf="@+id/home"
+            android:layout_width="359dp"
+            android:layout_height="47dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="7dp"
             android:background="@drawable/backround"
             android:hint="Search"
             android:inputType="text"
             android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
             android:onClick="setVisibility"
-            />
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +293,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
-
 
 
     </LinearLayout>

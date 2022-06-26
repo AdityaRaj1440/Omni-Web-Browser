@@ -222,5 +222,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void getBack(android.view.View view)
+    {
+        wb.goBack();
+    }
 
+    public void getForward(android.view.View view)
+    {
+        wb.goForward();
+    }
+
+    public void reloadPage(android.view.View view)
+    {
+        Toast.makeText(this, "Reloading", Toast.LENGTH_SHORT).show();
+        wb.reload();
+        //EditText urlET = findViewById(R.id.urlET);
+        //urlET.setText(WebAction(urlET));
+        //swipe.setRefreshing(false);
+
+    }
+
+    public void return_to_home(android.view.View view)
+    {
+        //onRestart();
+        finish();
+        startActivity(getIntent());
+    }
 }
