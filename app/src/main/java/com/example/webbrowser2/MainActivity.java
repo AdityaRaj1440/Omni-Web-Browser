@@ -50,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try{
+            Bundle bundle = getIntent().getExtras();
+            no = bundle.containsKey("tabno")?bundle.getInt("tabno"):1;
+        }catch(Exception e){
+            // do nothing
+        }
+
 
         Button btn= (Button) findViewById(R.id.tabs);
         btn.setText(""+no);
@@ -210,8 +217,11 @@ public class MainActivity extends AppCompatActivity {
             Button btn= (Button) findViewById(v.getId());
             no++;
             btn.setText(""+(no));
-            Intent intent= new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
+        Bundle tabBundle = new Bundle();
+        tabBundle.putInt("tabno", no);
+        Intent intent= new Intent(MainActivity.this, MainActivity.class);
+        intent.putExtras(tabBundle);
+        startActivity(intent);
 
     }
 
