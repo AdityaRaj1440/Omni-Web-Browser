@@ -24,14 +24,20 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
@@ -43,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     int no= 1;
     Activity activity ;
     ProgressDialog progDialog;
+    MyDbHandler dbHandler;
+    myDbHandlerBook dbHandlerbook;
     //final EditText urlET = findViewById(R.id.urlET);
     @SuppressLint("NewApi")
     @Override
@@ -63,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         sv= (SearchView) findViewById(R.id.searchBar);
 
         activity = this;
+        dbHandler= new MyDbHandler(this,null,null,1);
+        dbHandlerbook=new myDbHandlerBook(this,null,null,1);
 
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -79,7 +89,30 @@ public class MainActivity extends AppCompatActivity {
                 final WebView wb = findViewById(R.id.searchResult);
                  EditText urlET = findViewById(R.id.urlET);
                 final ImageView home = findViewById(R.id.home);
+                ImageButton bookmark, history;
 
+
+
+
+                bookmark = findViewById(R.id.bookmark);
+                history = findViewById(R.id.history);
+
+                bookmark.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        onBookPressed();
+                        Toast.makeText(MainActivity.this, "Page Added in Bookmarks", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                history.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setContentView(R.layout.activity_history);
+                        onHistoryPressed();
+
+                    }
+                });
 
                 urlET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
@@ -93,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
                             InputMethodManager imm = (InputMethodManager)  getBaseContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(urlET.getWindowToken(), 0);
                             urlET.setCursorVisible(false);
+                            saveData(curUrl);
                             wb.loadUrl(curUrl);
+
                             return true;
                         }
                         return false;
@@ -170,8 +205,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        saveData(url);
         wb.loadUrl(url);
+
 
         return url;
 
@@ -257,5 +293,83 @@ public class MainActivity extends AppCompatActivity {
         //onRestart();
         finish();
         startActivity(getIntent());
+    }
+
+    private void onBookPressed()
+    {
+        Websites web=new Websites(wb.getUrl());
+        dbHandlerbook.addUrl(web);
+        setContentView(R.layout.activity_bookmarks);
+
+        final List<String> books=dbHandlerbook.databaseToString();
+        if(books.size()>0)
+        {
+            ArrayAdapter myadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,books);
+            ListView mylist=(ListView)findViewById(R.id.listViewBook);
+            mylist.setAdapter(myadapter);
+
+            mylist.setOnItemClickListener(
+                    new AdapterView.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            /*String url=books.get(position);*/
+                            String url=books.get(position);
+                            Intent intent = new Intent(view.getContext(),MainActivity.class);
+
+                            intent.putExtra("urls",url);
+
+                            startActivity(intent);
+                            finish();
+
+
+                        }
+                    }
+            );
+        }
+        //Intent bookmarks  = new Intent(MainActivity.this,bookmarks.class);
+        //startActivity(bookmarks);
+
+
+    }
+
+    private void onHistoryPressed(){
+
+        final List<String> sites=dbHandler.databaseToString();
+        if(sites.size()>0){
+            ArrayAdapter myadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,sites);
+            ListView mylist=(ListView)findViewById(R.id.listview);
+            mylist.setAdapter(myadapter);
+
+
+            mylist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    /*String url=sites.get(i);
+                    Toast.makeText(history.this, "item Selected : "+url +" deleted", Toast.LENGTH_LONG).show();
+                        dbHandler.deleteUrl(url);*/
+
+                    return false;
+                }
+            });
+
+            mylist.setOnItemClickListener(
+
+                    new AdapterView.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String url=sites.get(position);
+                            wb.loadUrl(url);
+                            finish();
+                        }
+                    }
+            );
+        }
+
+    }
+    private void saveData(String url)
+    {
+        Websites webv=new Websites(url);
+        dbHandler.addUrl(webv);
     }
 }
