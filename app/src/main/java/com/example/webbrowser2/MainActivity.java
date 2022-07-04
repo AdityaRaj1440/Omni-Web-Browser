@@ -16,6 +16,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
@@ -31,26 +32,29 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    boolean doubleBackToExitPressedOnce = false;
-    private long pressedTime;
-    public String url = "";
-    WebView wb;
-    SearchView sv;
-    SwipeRefreshLayout swipe;
-    int no= 1;
+    boolean doubleBackToExitPressedOnce = false;        //flag for exiting using double back button
+    private long pressedTime;                           //time for which a button is pressed
+    public String url = "";                             //to store current url
+    WebView wb;                                         //component rendering search result in browser
+    SearchView sv;                                      //component used as search bar
+    SwipeRefreshLayout swipe;                           //tool to allow swiping vertically the screen to refresh
+    int no= 1;                                          //number of tabs currently
     Activity activity ;
-    ProgressDialog progDialog;
+    ProgressDialog progDialog;                          //used to show a loading sign while the page is loaded
     MyDbHandler dbHandler;
     myDbHandlerBook dbHandlerbook;
+    ImageButton menuButton;
     //final EditText urlET = findViewById(R.id.urlET);
     @SuppressLint("NewApi")
     @Override
@@ -58,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        menuButton= (ImageButton) findViewById(R.id.back_arrow);
+
+        //to synchronize tab number with calling a new intent
         try{
             Bundle bundle = getIntent().getExtras();
             no = bundle.containsKey("tabno")?bundle.getInt("tabno"):1;
@@ -66,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Button btn= (Button) findViewById(R.id.tabs);
+        Button btn= (Button) findViewById(R.id.tabs);        //button to create new tabs
         btn.setText(""+no);
         sv= (SearchView) findViewById(R.id.searchBar);
 
@@ -78,31 +85,32 @@ public class MainActivity extends AppCompatActivity {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                url= "https://duckduckgo.com/?q="+s+"&ia=web";
+                url= "https://duckduckgo.com/?q="+s+"&ia=web";          //setting the url
 
 
 //                Intent intent = new Intent(MainActivity.this, SearchResult.class);
 //                intent.putExtra("url", url);
 //                startActivity(intent);
 
-                setContentView(R.layout.activity_search_result);
+                setContentView(R.layout.activity_search_result);        //changes to xml layout supporting webview
                 final WebView wb = findViewById(R.id.searchResult);
-                 EditText urlET = findViewById(R.id.urlET);
-                final ImageView home = findViewById(R.id.home);
+                 EditText urlET = findViewById(R.id.urlET);             //another search bar
+                final ImageView home = findViewById(R.id.home);         //home button
                 ImageButton bookmark, history;
 
 
 
 
-                bookmark = findViewById(R.id.bookmark);
-                history = findViewById(R.id.history);
+                bookmark = findViewById(R.id.bookmark);                 //bookmark button
+                history = findViewById(R.id.history);                   //history button
 
                 bookmark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        onBookPressed();
-                        Toast.makeText(MainActivity.this, "Page Added in Bookmarks", Toast.LENGTH_SHORT).show();
+                        Intent intent1= new Intent(MainActivity.this,MainActivity.class);
+                        startActivity(intent1);
+//                        onBookPressed();
+//                        Toast.makeText(MainActivity.this, "Page Added in Bookmarks", Toast.LENGTH_SHORT).show();
                     }
                 });
                 history.setOnClickListener(new View.OnClickListener() {
@@ -295,10 +303,29 @@ public class MainActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    public void addBookmarks()
+    {
+
+
+
+        Websites web=new Websites(wb.getUrl());
+        List<String> arr= dbHandlerbook.databaseToString();
+        if(!arr.contains(wb.getUrl()))
+        {
+            dbHandlerbook.addUrl(web);
+            Toast.makeText(getBaseContext(),"Bookmark added",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            dbHandlerbook.deleteUrl(wb.getUrl());
+            Toast.makeText(getBaseContext(),"Bookmark removed",Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void onBookPressed()
     {
-        Websites web=new Websites(wb.getUrl());
-        dbHandlerbook.addUrl(web);
+//        Websites web=new Websites(wb.getUrl());
+//        dbHandlerbook.addUrl(web);
         setContentView(R.layout.activity_bookmarks);
 
         final List<String> books=dbHandlerbook.databaseToString();
@@ -371,5 +398,25 @@ public class MainActivity extends AppCompatActivity {
     {
         Websites webv=new Websites(url);
         dbHandler.addUrl(webv);
+    }
+
+    public void showMenu(android.view.View view)
+    {
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, menuButton);
+        Toast.makeText(getBaseContext(),"Hello There",Toast.LENGTH_LONG);
+        // Inflating popup menu from popup_menu.xml file
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                // Toast message on menu item clicked
+                if(menuItem.getTitle().toString().equals("Add Bookmark"))
+                    addBookmarks();
+                //Toast.makeText(MainActivity.this, "You Clicked " + wb.getUrl(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        // Showing the popup menu
+        popupMenu.show();
     }
 }
