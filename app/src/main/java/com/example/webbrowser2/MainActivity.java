@@ -62,20 +62,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button btn= (Button) findViewById(R.id.tabs);        //button to create new tabs
+        btn.setText(""+no);
+        sv= (SearchView) findViewById(R.id.searchBar);
+
         menuButton= (ImageButton) findViewById(R.id.back_arrow);
 
         //to synchronize tab number with calling a new intent
         try{
             Bundle bundle = getIntent().getExtras();
+            if(bundle.containsKey("urls"))
+            {
+                Toast.makeText(getBaseContext(),"Hello: "+bundle.getString("urls"),Toast.LENGTH_LONG).show();
+                setContentView(R.layout.activity_search_result);        //changes to xml layout supporting webview
+                url= bundle.getString("urls");
+            }
             no = bundle.containsKey("tabno")?bundle.getInt("tabno"):1;
         }catch(Exception e){
             // do nothing
         }
 
 
-        Button btn= (Button) findViewById(R.id.tabs);        //button to create new tabs
-        btn.setText(""+no);
-        sv= (SearchView) findViewById(R.id.searchBar);
+
 
         activity = this;
         dbHandler= new MyDbHandler(this,null,null,1);
@@ -107,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 bookmark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent1= new Intent(MainActivity.this,MainActivity.class);
+                        Intent intent1= new Intent(MainActivity.this,Bookmarks.class);
                         startActivity(intent1);
 //                        onBookPressed();
 //                        Toast.makeText(MainActivity.this, "Page Added in Bookmarks", Toast.LENGTH_SHORT).show();
@@ -222,8 +230,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         try{
@@ -305,9 +311,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void addBookmarks()
     {
-
-
-
         Websites web=new Websites(wb.getUrl());
         List<String> arr= dbHandlerbook.databaseToString();
         if(!arr.contains(wb.getUrl()))
@@ -322,42 +325,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void onBookPressed()
-    {
-//        Websites web=new Websites(wb.getUrl());
-//        dbHandlerbook.addUrl(web);
-        setContentView(R.layout.activity_bookmarks);
-
-        final List<String> books=dbHandlerbook.databaseToString();
-        if(books.size()>0)
-        {
-            ArrayAdapter myadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,books);
-            ListView mylist=(ListView)findViewById(R.id.listViewBook);
-            mylist.setAdapter(myadapter);
-
-            mylist.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener(){
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            /*String url=books.get(position);*/
-                            String url=books.get(position);
-                            Intent intent = new Intent(view.getContext(),MainActivity.class);
-
-                            intent.putExtra("urls",url);
-
-                            startActivity(intent);
-                            finish();
-
-
-                        }
-                    }
-            );
-        }
-        //Intent bookmarks  = new Intent(MainActivity.this,bookmarks.class);
-        //startActivity(bookmarks);
-
-
-    }
 
     private void onHistoryPressed(){
 

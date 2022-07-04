@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WebBrowser2">
         <activity
+            android:name=".Bookmarks"
+            android:exported="false" />
+        <activity
             android:name=".SearchResult"
             android:exported="true" />
         <activity
