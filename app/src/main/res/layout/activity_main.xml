@@ -153,9 +153,9 @@
                 android:layout_marginRight="18dp"
                 android:layout_toLeftOf="@+id/forward_arrow"
                 android:layout_weight="1"
-                android:onClick="showMenu"
+                android:backgroundTint="#FFFFFF"
                 android:padding="20dp"
-                android:src="@drawable/back_arrow" />
+                android:src="@android:drawable/btn_dropdown" />
 
             <ImageButton
                 android:id="@+id/forward_arrow"
