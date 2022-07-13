@@ -56,11 +56,31 @@ public class MainActivity extends AppCompatActivity {
     myDbHandlerBook dbHandlerbook;
     ImageButton menuButton;
     //final EditText urlET = findViewById(R.id.urlET);
+    EditText urlET;
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //to synchronize tab number with calling a new intent
+        try{
+            Bundle bundle = getIntent().getExtras();
+            if(bundle.containsKey("urls"))
+            {
+
+                url= bundle.getString("urls");
+
+                setContentView(R.layout.activity_search_result);
+                urlET =  findViewById(R.id.urlET);
+                WebAction(urlET);
+
+
+            }
+            no = bundle.containsKey("tabno")?bundle.getInt("tabno"):1;
+        }catch(Exception e){
+            // do nothing
+        }
 
         Button btn= (Button) findViewById(R.id.tabs);        //button to create new tabs
         btn.setText(""+no);
@@ -68,19 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         menuButton= (ImageButton) findViewById(R.id.back_arrow);
 
-        //to synchronize tab number with calling a new intent
-        try{
-            Bundle bundle = getIntent().getExtras();
-            if(bundle.containsKey("urls"))
-            {
-                Toast.makeText(getBaseContext(),"Hello: "+bundle.getString("urls"),Toast.LENGTH_LONG).show();
-                setContentView(R.layout.activity_search_result);        //changes to xml layout supporting webview
-                url= bundle.getString("urls");
-            }
-            no = bundle.containsKey("tabno")?bundle.getInt("tabno"):1;
-        }catch(Exception e){
-            // do nothing
-        }
+
 
 
 
@@ -101,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(intent);
 
                 setContentView(R.layout.activity_search_result);        //changes to xml layout supporting webview
+
+                //to synchronize tab number with calling a new intent for the search result page
+                Button btn= (Button) findViewById(R.id.tabs);        //button to create new tabs
+                btn.setText(""+no);
+
                 final WebView wb = findViewById(R.id.searchResult);
                  EditText urlET = findViewById(R.id.urlET);             //another search bar
                 final ImageView home = findViewById(R.id.home);         //home button
@@ -216,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageStarted(WebView view, String urlExisting, Bitmap favicon) {
                 super.onPageStarted(view, urlExisting, favicon);
                 url = urlExisting;
+                //Toast.makeText(getBaseContext(),"this works"+urlExisting,Toast.LENGTH_LONG).show();
                 urlET.setText(url);
 
 
@@ -266,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
     public void addTabs(android.view.View v){
             Button btn= (Button) findViewById(v.getId());
             no++;
-            btn.setText(""+(no));
+            //btn.setText(""+(no));
         Bundle tabBundle = new Bundle();
         tabBundle.putInt("tabno", no);
         Intent intent= new Intent(MainActivity.this, MainActivity.class);
