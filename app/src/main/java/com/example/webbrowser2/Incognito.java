@@ -8,20 +8,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -37,12 +31,9 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class Incognito extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;        //flag for exiting using double back button
     private long pressedTime;                           //time for which a button is pressed
     public String url = "";                             //to store current url
@@ -61,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_incognito);
 
         //to synchronize tab number with calling a new intent
         try{
@@ -71,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
                 url= bundle.getString("urls");
 
-                setContentView(R.layout.activity_search_result);
+                setContentView(R.layout.incognito_result);
                 urlET =  findViewById(R.id.urlET);
                 WebAction(urlET);
 
@@ -108,14 +99,14 @@ public class MainActivity extends AppCompatActivity {
 //                intent.putExtra("url", url);
 //                startActivity(intent);
 
-                setContentView(R.layout.activity_search_result);        //changes to xml layout supporting webview
+                setContentView(R.layout.incognito_result);        //changes to xml layout supporting webview
 
                 //to synchronize tab number with calling a new intent for the search result page
                 Button btn= (Button) findViewById(R.id.tabs);        //button to create new tabs
                 btn.setText(""+no);
 
                 final WebView wb = findViewById(R.id.searchResult);
-                 EditText urlET = findViewById(R.id.urlET);             //another search bar
+                EditText urlET = findViewById(R.id.urlET);             //another search bar
                 final ImageView home = findViewById(R.id.home);         //home button
                 ImageButton bookmark, history;
 
@@ -128,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 bookmark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent1= new Intent(MainActivity.this,Bookmarks.class);
+                        Intent intent1= new Intent(Incognito.this,Bookmarks.class);
                         startActivity(intent1);
 //                        onBookPressed();
 //                        Toast.makeText(MainActivity.this, "Page Added in Bookmarks", Toast.LENGTH_SHORT).show();
@@ -199,9 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-//        ImageView im= (ImageView) findViewById(R.id.imageView);
-//        Picasso.get().load("https://wallpaperaccess.com/thumb/36626.jpg").into(im);
-
     }
 
     public String WebAction(EditText urlET) {
@@ -218,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         wb.setWebViewClient(new WebViewClient(){
 
 
-           @Override
+            @Override
             public void onPageFinished(WebView view, String url) {
                 if (progDialog.isShowing()) {
                     progDialog.dismiss();
@@ -278,12 +266,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addTabs(android.view.View v){
-            Button btn= (Button) findViewById(v.getId());
-            no++;
-            //btn.setText(""+(no));
+        Button btn= (Button) findViewById(v.getId());
+        no++;
+        //btn.setText(""+(no));
         Bundle tabBundle = new Bundle();
         tabBundle.putInt("tabno", no);
-        Intent intent= new Intent(MainActivity.this, MainActivity.class);
+        Intent intent= new Intent(Incognito.this, Incognito.class);
         intent.putExtras(tabBundle);
         startActivity(intent);
 
@@ -323,21 +311,22 @@ public class MainActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
-    public void addBookmarks()
+   /** public void addBookmarks()
     {
         Websites web=new Websites(wb.getUrl());
-        List<String> arr= dbHandlerbook.databaseToString();
+      //  List<String> arr= dbHandlerbook.databaseToString();
         if(!arr.contains(wb.getUrl()))
         {
-            dbHandlerbook.addUrl(web);
+       //     dbHandlerbook.addUrl(web);
             Toast.makeText(getBaseContext(),"Bookmark added",Toast.LENGTH_LONG).show();
         }
         else
         {
-            dbHandlerbook.deleteUrl(wb.getUrl());
+            //dbHandlerbook.deleteUrl(wb.getUrl());
             Toast.makeText(getBaseContext(),"Bookmark removed",Toast.LENGTH_LONG).show();
         }
     }
+    */
 
 
     private void onHistoryPressed(){
@@ -366,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                     new AdapterView.OnItemClickListener(){
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String url=sites.get(position);
+                           // String url=sites.get(position);
                             wb.loadUrl(url);
                             finish();
                         }
@@ -378,12 +367,12 @@ public class MainActivity extends AppCompatActivity {
     private void saveData(String url)
     {
         Websites webv=new Websites(url);
-        dbHandler.addUrl(webv);
+        //dbHandler.addUrl(webv);
     }
 
     public void showMenu(android.view.View view)
     {
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, menuButton);
+        PopupMenu popupMenu = new PopupMenu(Incognito.this, menuButton);
         Toast.makeText(getBaseContext(),"Hello There",Toast.LENGTH_LONG);
         // Inflating popup menu from popup_menu.xml file
         popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
@@ -392,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 // Toast message on menu item clicked
                 if(menuItem.getTitle().toString().equals("Add Bookmark"))
-                    addBookmarks();
+                   Toast.makeText(Incognito.this,"Adding Bookmarks disabled in Incognito mode",Toast.LENGTH_LONG).show();// addBookmarks();
                 //Toast.makeText(MainActivity.this, "You Clicked " + wb.getUrl(), Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -400,9 +389,6 @@ public class MainActivity extends AppCompatActivity {
         // Showing the popup menu
         popupMenu.show();
     }
-    public void goIncognito(View view)
-    {
-        Intent intent= new Intent(MainActivity.this, Incognito.class);
-        startActivity(intent);
-    }
+
+
 }

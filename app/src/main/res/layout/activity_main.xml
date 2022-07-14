@@ -153,6 +153,7 @@
                 android:layout_marginRight="18dp"
                 android:layout_toLeftOf="@+id/forward_arrow"
                 android:layout_weight="1"
+                android:onClick= "goIncognito"
                 android:backgroundTint="#FFFFFF"
                 android:padding="20dp"
                 android:src="@android:drawable/btn_dropdown" />
