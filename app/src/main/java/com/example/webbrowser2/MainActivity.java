@@ -393,6 +393,8 @@ public class MainActivity extends AppCompatActivity {
                 // Toast message on menu item clicked
                 if(menuItem.getTitle().toString().equals("Add Bookmark"))
                     addBookmarks();
+                if(menuItem.getTitle().toString().equals("Incognito Mode"))
+                    goIncognito(view);
                 //Toast.makeText(MainActivity.this, "You Clicked " + wb.getUrl(), Toast.LENGTH_SHORT).show();
                 return true;
             }
